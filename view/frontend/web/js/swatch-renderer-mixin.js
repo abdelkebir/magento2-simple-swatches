@@ -4,8 +4,7 @@ define([
     'use strict';
 
     return function (widget) {
-        console.log('Hello from SwatchExtend');
-
+        
         $.widget('mage.SwatchRenderer', widget, {
           /**
            * Return intersection from 2 dimentional array
