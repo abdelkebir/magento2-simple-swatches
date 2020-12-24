@@ -1,10 +1,11 @@
 define([
-    'jquery'
-], function ($) {
+    'jquery',
+    'mage/translate'
+], function ($,$t) {
     'use strict';
 
     return function (widget) {
-        
+
         $.widget('mage.SwatchRenderer', widget, {
           /**
            * Return intersection from 2 dimentional array
@@ -72,8 +73,14 @@ define([
               intersectionProducts = $widget._IntersectionArray(selectedProducts);
               if(intersectionProducts.length < 1 || intersectionProducts == undefined){
                 document.getElementById("product-addtocart-button").disabled = true;
+                $('.product-info-stock-sku .stock').removeClass('available');
+                $('.product-info-stock-sku .stock').addClass('unavailable');
+                $('.product-info-stock-sku .stock span').text($t('Out Of Stock'));
               } else {
                 document.getElementById("product-addtocart-button").disabled = false;
+                $('.product-info-stock-sku .stock').removeClass('unavailable');
+                $('.product-info-stock-sku .stock').addClass('available');
+                $('.product-info-stock-sku .stock span').text($t('In Stock'));
               }
           }
         });
