@@ -38,8 +38,12 @@ class Configurable extends MainConfigurable
                     $spConfig[$key] = $opId;
                 }
                 $childPrices[$childProduct->getId()] = $childProduct->getFinalPrice();
+                if (!$childProduct->isSalable()) {
+                    $allProducts[$childProduct->getId()] = array_merge(['spConfig' => $spConfig], $this->_getProductData($childProduct, $attrName), ['instock' => 0]);
+                }else{
+                    $allProducts[$childProduct->getId()] = array_merge(['spConfig' => $spConfig], $this->_getProductData($childProduct, $attrName), ['instock' => 1]);
+                }
 
-                $allProducts[$childProduct->getId()] = array_merge(['spConfig' => $spConfig], $this->_getProductData($childProduct, $attrName));
             }
             $preselect = 0;
             if ($preselectType == 1) {

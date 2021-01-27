@@ -8,7 +8,7 @@ define([
 
         $.widget('mage.SwatchRenderer', widget, {
           /**
-           * Return intersection from 2 dimentional array
+           * Return intersection from multi dimentional array
            *
            * @returns {Array}
            * @private
@@ -69,18 +69,29 @@ define([
                     products = $widget._CalcProducts(id);
                 selectedProducts.push($widget.optionsMap[id][$this.attr('option-selected')].products);
               });
-
               intersectionProducts = $widget._IntersectionArray(selectedProducts);
-              if(intersectionProducts.length < 1 || intersectionProducts == undefined){
+
+              if(intersectionProducts.length == 1){
+                if(!$widget.options.cpsdProducts[intersectionProducts[0]].instock){
+                  document.getElementById("product-addtocart-button").disabled = true;
+                  $('.product-info-stock-sku .stock').removeClass('available');
+                  $('.product-info-stock-sku .stock').addClass('unavailable');
+                  $('.product-info-stock-sku .stock span').text($t('Out Of Stock'));
+                } else {
+                  document.getElementById("product-addtocart-button").disabled = false;
+                  $('.product-info-stock-sku .stock').removeClass('unavailable');
+                  $('.product-info-stock-sku .stock').addClass('available');
+                  $('.product-info-stock-sku .stock span').text($t('In Stock'));
+                }
+                $('.product-info-stock-sku .product.attribute.sku').show();
+              } else if(intersectionProducts.length == 0){
                 document.getElementById("product-addtocart-button").disabled = true;
                 $('.product-info-stock-sku .stock').removeClass('available');
                 $('.product-info-stock-sku .stock').addClass('unavailable');
-                $('.product-info-stock-sku .stock span').text($t('Out Of Stock'));
+                $('.product-info-stock-sku .stock span').text($t('Product Discontinued'));
+                $('.product-info-stock-sku .product.attribute.sku').hide();
               } else {
-                document.getElementById("product-addtocart-button").disabled = false;
-                $('.product-info-stock-sku .stock').removeClass('unavailable');
-                $('.product-info-stock-sku .stock').addClass('available');
-                $('.product-info-stock-sku .stock span').text($t('In Stock'));
+                $('.product-info-stock-sku .product.attribute.sku').hide();
               }
           }
         });
